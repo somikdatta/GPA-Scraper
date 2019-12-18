@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 
 # Declarations
-url = "https://result.smitcs.in/ex19.php?eid=NOVEMBER/DECEMBER%20SEMESTER%20EXAMINATION%202019"
+url = input()
 nextUrl = []  # subject URLs
 header = {'User-Agent': 'Mozilla/5.0'}
 fileName = url[27:29]  # dynamic filename
@@ -28,11 +28,11 @@ def main():
                     "https://result.smitcs.in/grade.php?subid="+subcode)
 
     for urliter in nextUrl:
-        # print(urliter)
         count = 1
         code = "SUB"
         credit = 0.0
         reg = 0
+        name = ""
         html = session.get(urliter.strip(), headers=header)
         soup = BeautifulSoup(html.content, 'html.parser')
 
@@ -47,6 +47,11 @@ def main():
             if(count < 19):
                 if(count == 9):
                     code = line.strip().split()[3]  # store subcode
+                elif(count == 11):
+                    i = 3
+                    while(i < len(line.strip().split())):
+                        name += line.strip().split()[i]+" "
+                        i += 1
                 elif(count == 13):
                     try:  # store subcredit
                         credit = float(line.strip().split()[3])
@@ -61,6 +66,7 @@ def main():
                 except:
                     break
                 fullDict[reg] = fullDict.get(reg, {})
+                Dict['sub'] = name
                 Dict['int'] = line.strip().split()[1]
                 Dict['ext'] = line.strip().split()[2]
                 Dict['tot'] = line.strip().split()[3]
