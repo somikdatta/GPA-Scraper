@@ -24,6 +24,8 @@ def main():
             for link in paragraph.select("a"):
                 href = link['href']
                 subcode = href[href.index('=')+1:]
+                if(subcode == "CS1545"):
+                    subcode = "CS1644"
                 nextUrl.append(
                     "https://result.smitcs.in/grade.php?subid="+subcode)
 
