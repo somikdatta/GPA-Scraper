@@ -28,61 +28,125 @@ def main():
                     subcode = "CS1644"
                 nextUrl.append(
                     "https://result.smitcs.in/grade.php?subid="+subcode)
+    # end of url generation
+    if(int(fileName) % 2 != 1):
+        for urliter in nextUrl:
+            count = 1
+            code = "SUB"
+            credit = 0.0
+            reg = 0
+            name = ""
+            html = session.get(urliter.strip(), headers=header)
+            soup = BeautifulSoup(html.content, 'html.parser')
 
-    for urliter in nextUrl:
-        count = 1
-        code = "SUB"
-        credit = 0.0
-        reg = 0
-        name = ""
-        html = session.get(urliter.strip(), headers=header)
-        soup = BeautifulSoup(html.content, 'html.parser')
+            writeTextFile = open("{}.txt".format(fileName), "w")
+            writeTextFile.write(soup.find('pre').getText())
+            writeTextFile.close()
 
-        writeTextFile = open("{}.txt".format(fileName), "w")
-        writeTextFile.write(soup.find('pre').getText())
-        writeTextFile.close()
+            readTextFile = open("{}.txt".format(fileName))
+            line = readTextFile.readline()
 
-        readTextFile = open("{}.txt".format(fileName))
-        line = readTextFile.readline()
-
-        while line:
-            if(count < 19):
-                if(count == 9):
-                    code = line.strip().split()[3]  # store subcode
-                elif(count == 11):
-                    i = 3
-                    while(i < len(line.strip().split())):
-                        name += line.strip().split()[i]+" "
-                        i += 1
-                elif(count == 13):
-                    try:  # store subcredit
-                        credit = float(line.strip().split()[3])
+            while line:
+                if(count < 19):
+                    if(count == 9):
+                        try:
+                            code = line.strip().split()[3]  # store subcode
+                        except:
+                            break
+                    elif(count == 11):
+                        i = 3
+                        while(i < len(line.strip().split())):
+                            name += line.strip().split()[i]+" "
+                            i += 1
+                    elif(count == 13):
+                        try:  # store subcredit
+                            credit = float(line.strip().split()[3])
+                        except:
+                            break
+                elif(count % 2 != 0):
+                    if(len(line.strip().split()) == 0):
+                        break
+                    Dict = {}  # subject iteration
+                    try:
+                        reg = int(line.strip().split()[0])
                     except:
                         break
-            elif(count % 2 != 0):
-                if(len(line.strip().split()) == 0):
-                    break
-                Dict = {}  # subject iteration
-                try:
-                    reg = int(line.strip().split()[0])
-                except:
-                    break
-                fullDict[reg] = fullDict.get(reg, {})
-                Dict['sub'] = name
-                Dict['int'] = line.strip().split()[1]
-                Dict['ext'] = line.strip().split()[2]
-                Dict['tot'] = line.strip().split()[3]
-                Dict['grade'] = line.strip().split()[4]
-                Dict['credit'] = credit
-                fullDict[reg][code] = Dict
+                    fullDict[reg] = fullDict.get(reg, {})
+                    Dict['sub'] = name
+                    Dict['int'] = line.strip().split()[1]
+                    Dict['ext'] = line.strip().split()[2]
+                    Dict['tot'] = line.strip().split()[3]
+                    Dict['grade'] = line.strip().split()[4]
+                    Dict['credit'] = credit
+                    fullDict[reg][code] = Dict
 
+                line = readTextFile.readline()
+                count += 1
+            readTextFile.close()
+
+        jsonDump = open("{}.json".format(fileName), "w")
+        jsonDump.write(json.dumps(fullDict))
+        jsonDump.close()
+    elif(int(fileName) % 2 == 0):
+        for urliter in nextUrl:
+            count = 1
+            code = "SUB"
+            credit = 0.0
+            reg = 0
+            name = ""
+            html = session.get(urliter.strip(), headers=header)
+            soup = BeautifulSoup(html.content, 'html.parser')
+
+            writeTextFile = open("{}.txt".format(fileName), "w")
+            writeTextFile.write(soup.find('pre').getText())
+            writeTextFile.close()
+            jsonLoad = open("{}.json".format(int(fileName)-1), "r")
+            semResDict = jsonLoad.load(jsonLoad)
+
+            readTextFile = open("{}.txt".format(fileName))
             line = readTextFile.readline()
-            count += 1
-        readTextFile.close()
 
-    jsonDump = open("{}.json".format(fileName), "w")
-    jsonDump.write(json.dumps(fullDict))
-    jsonDump.close()
+            while line:
+                if(count < 19):
+                    if(count == 9):
+                        try:
+                            code = line.strip().split()[3]  # store subcode
+                        except:
+                            break
+                    elif(count == 11):
+                        i = 3
+                        while(i < len(line.strip().split())):
+                            name += line.strip().split()[i]+" "
+                            i += 1
+                    elif(count == 13):
+                        try:  # store subcredit
+                            credit = float(line.strip().split()[3])
+                        except:
+                            break
+                elif(count % 2 != 0):
+                    if(len(line.strip().split()) == 0):
+                        break
+                    Dict = {}  # subject iteration
+                    try:
+                        reg = int(line.strip().split()[0])
+                    except:
+                        break
+                    semResDict[reg] = semResDict.get(reg, {})
+                    Dict['sub'] = name
+                    Dict['int'] = line.strip().split()[1]
+                    Dict['ext'] = line.strip().split()[2]
+                    Dict['tot'] = line.strip().split()[3]
+                    Dict['grade'] = line.strip().split()[4]
+                    Dict['credit'] = credit
+                    semResDict[reg][code] = Dict
+
+                line = readTextFile.readline()
+                count += 1
+            readTextFile.close()
+
+        jsonDump = open("{}.json".format(int(fileName)-1), "w")
+        jsonDump.write(json.dumps(semResDict))
+        jsonDump.close()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,17 @@
+		SIKKIM MANIPAL UNIVERSITY 
+
+		GRADE SHEET - NOV/DEC 2017 EXAMINATIONS.  
+
+Subject Code  : CH2582
+Subject Title : SEMINAR
+Subject Credit : 2.0 
+
+REGNO		INT	   UM		TOT	GRADE
+201610016	 0.00	   DT	      0.00	DT
+
+
+Abbreviations : INT = IN SEM marks, UM : END SEM marks.
+
+
+Absolute Grading Range : 
+ S>89, A: 80-89, B: 70-79, C: 60-69, D:50-59, E:40-49, F<40

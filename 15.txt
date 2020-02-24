@@ -1,0 +1,17 @@
+		SIKKIM MANIPAL UNIVERSITY 
+
+		GRADE SHEET - NOV/DEC 2018 EXAMINATIONS.  
+
+Subject Code  : ME5181
+Subject Title : SEMINAR
+Subject Credit : 2.0 
+
+REGNO		INT	   UM		TOT	GRADE
+201810006	45.00	 42.6	     88.00	A
+
+
+Abbreviations : INT = IN SEM marks, UM : END SEM marks.
+
+
+Absolute Grading Range : 
+ S>89, A: 80-89, B: 70-79, C: 60-69, D:50-59, E:40-49, F<40
