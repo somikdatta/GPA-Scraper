@@ -6,7 +6,7 @@ import json
 url = input()
 nextUrl = []  # subject URLs
 header = {'User-Agent': 'Mozilla/5.0'}
-fileName = url[27:29]  # dynamic filename
+fileName = url[38:40]  # dynamic filename
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
                 if(subcode == "CS1545"):
                     subcode = "CS1644"
                 nextUrl.append(
-                    "https://result.smitcs.in/grade.php?subid="+subcode)
+                    "https://result.smuexam.in/result/v1/grade.php?subid="+subcode)
 
     for urliter in nextUrl:
         count = 1
