@@ -6,7 +6,7 @@ import json
 url = input()
 nextUrl = []  # subject URLs
 header = {'User-Agent': 'Mozilla/5.0'}
-fileName = url[38:40]  # dynamic filename
+fileName = url[28:30]  # dynamic filename
 
 
 def main():
@@ -24,10 +24,8 @@ def main():
             for link in paragraph.select("a"):
                 href = link['href']
                 subcode = href[href.index('=')+1:]
-                if(subcode == "CS1545"):
-                    subcode = "CS1644"
                 nextUrl.append(
-                    "https://result.smuexam.in/result/v1/grade.php?subid="+subcode)
+                    "https://result.smuexam.in/grade.php?subid="+subcode)
 
     for urliter in nextUrl:
         count = 1
@@ -59,7 +57,7 @@ def main():
                         credit = float(line.strip().split()[3])
                     except:
                         break
-            elif(count % 2 != 0):
+            elif(count % 2 != 0 and credit != 0.0):
                 if(len(line.strip().split()) == 0):
                     break
                 Dict = {}  # subject iteration
