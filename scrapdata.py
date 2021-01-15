@@ -42,40 +42,34 @@ def main():
 
         readTextFile = open("{}.txt".format(fileName))
         line = readTextFile.readline()
-
         while line:
-            if(count < 19):
-                if(count == 9):
-                    code = line.strip().split()[3]  # store subcode
-                elif(count == 11):
+            line=line.strip().split()
+            if(len(line)==0 or line[0][0:3]=="REG" or line[0][0:3]=="SIK" or line[0][0:3]=="GRA" or line[0][0:3]=="Abb" or line[0][0:3]=="Abs" or line[0][0:3]=="S>=" or line[0][0:3]=="P>=" or line[0][0:3]=="Sto" or line[0][0:3]=="Gra"):
+                line = readTextFile.readline()
+                continue
+            elif(line[0]=="Subject"):
+                if(line[1]=="Code"):
+                    code=line[3]
+                elif(line[1]=="Title"):
                     i = 3
-                    while(i < len(line.strip().split())):
-                        name += line.strip().split()[i]+" "
+                    while(i < len(line)):
+                        name += line[i]+" "
                         i += 1
-                elif(count == 13):
-                    try:  # store subcredit
-                        credit = float(line.strip().split()[3])
-                    except:
-                        break
-            elif(count % 2 != 0 and credit != 0.0):
-                if(len(line.strip().split()) == 0):
-                    break
+                elif(line[1]=="Credit"):
+                    credit = float(line[3][0:3])
+            else:
                 Dict = {}  # subject iteration
-                try:
-                    reg = int(line.strip().split()[0])
-                except:
-                    break
+                reg = int(line[0])
                 fullDict[reg] = fullDict.get(reg, {})
                 Dict['sub'] = name
-                Dict['int'] = line.strip().split()[1]
-                Dict['ext'] = line.strip().split()[2]
-                Dict['tot'] = line.strip().split()[3]
-                Dict['grade'] = line.strip().split()[4]
+                Dict['int'] = line[1]
+                Dict['ext'] = line[2]
+                Dict['tot'] = line[3]
+                Dict['grade'] = line[4]
                 Dict['credit'] = credit
                 fullDict[reg][code] = Dict
-
             line = readTextFile.readline()
-            count += 1
+          
         readTextFile.close()
 
     jsonDump = open("{}.json".format(fileName), "w")
