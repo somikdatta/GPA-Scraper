@@ -6,7 +6,7 @@ import json
 url = input()
 nextUrl = []  # subject URLs
 header = {'User-Agent': 'Mozilla/5.0'}
-fileName = url[28:30]  # dynamic filename
+fileName = url[27:29]  # dynamic filename
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
                 href = link['href']
                 subcode = href[href.index('=')+1:]
                 nextUrl.append(
-                    "https://result.smuexam.in/grade.php?subid="+subcode)
+                    "https://result.smtech.in/grade.php?subid="+subcode)
 
     for urliter in nextUrl:
         count = 1
@@ -43,7 +43,9 @@ def main():
         readTextFile = open("{}.txt".format(fileName))
         line = readTextFile.readline()
         while line:
-            line=line.strip().split()
+            try:
+                line=line.strip().split()
+            except: break
             if(len(line)==0 or line[0][0:3]=="REG" or line[0][0:3]=="SIK" or line[0][0:3]=="GRA" or line[0][0:3]=="Abb" or line[0][0:3]=="Abs" or line[0][0:3]=="S>=" or line[0][0:3]=="P>=" or line[0][0:3]=="Sto" or line[0][0:3]=="Gra"):
                 line = readTextFile.readline()
                 continue
@@ -59,7 +61,9 @@ def main():
                     credit = float(line[3][0:3])
             else:
                 Dict = {}  # subject iteration
-                reg = int(line[0])
+                try:
+                    reg = int(line[0])
+                except: continue
                 fullDict[reg] = fullDict.get(reg, {})
                 Dict['sub'] = name
                 Dict['int'] = line[1]
